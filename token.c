@@ -48,7 +48,7 @@ static const struct {
 
 static const char* standalone_chars = "(){}[]@,";
 static const char* operator_chars = "!:/#";
-static const char* strlit_chars = "`\"'";
+static const char* strlit_chars = "\"'";
 static const char* indent_chars = " \t";
 
 static bool append_token(struct TokenLine* p_line, const struct Token p_token) {
@@ -138,6 +138,11 @@ static bool parse_line(const char* p_string, token_uint_t p_length, struct Token
             }
         } else {
             parse:
+            if(c == '\\') {
+                token.length += 2;
+                column++;
+                goto next;
+            }
             if(strlit_char) {
                 token.length++;
                 if(c == strlit_char) {
@@ -212,6 +217,8 @@ static bool parse_line(const char* p_string, token_uint_t p_length, struct Token
     on_error:
     if(line.capacity) free(line.tokens);
     error.column = token.column;
+    error.line.string = p_string;
+    error.line.length = p_length;
     *r_error = error;
     return false;
 }

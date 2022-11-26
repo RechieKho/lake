@@ -42,6 +42,10 @@ struct TokenLine {
 
 struct TokenError {
     const char* message;
+    struct {
+        const char* string;
+        token_uint_t length;
+    } line;
     token_uint_t row;
     token_uint_t column;
 };
