@@ -4,8 +4,6 @@
 #include "reader.h"
 #include "macros.h"
 
-#define INIT_CONTENT_CAPACITY 100
-
 int read(const char* p_filepath, read_handler_t p_handler) {
     int code = -1;
     long file_size = 0;
