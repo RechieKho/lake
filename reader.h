@@ -5,7 +5,7 @@
 
 typedef uint32_t reader_uint_t;
 
-typedef int (*read_handler_t)(const char* p_content);
+typedef int (*reader_handler_t)(const char* p_content);
 
-int read(const char* p_filepath, read_handler_t p_handler);
+int reader_read(const char* p_filepath, reader_handler_t p_handler);
 #endif //_READER_H_

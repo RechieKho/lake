@@ -4,7 +4,7 @@
 #include "reader.h"
 #include "macros.h"
 
-int read(const char* p_filepath, read_handler_t p_handler) {
+int reader_read(const char* p_filepath, reader_handler_t p_handler) {
     int code = -1;
     long file_size = 0;
     char* content = NULL;
