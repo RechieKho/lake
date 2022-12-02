@@ -3,12 +3,12 @@
 #include "token.h"
 #include "errno.h"
 
-static void print_token_result(const struct TokenResult p_result) {
+static void print_token_result(const struct token_result_s p_result) {
     for(token_uint_t i = 0; i < p_result.count; i++) {
-        const struct TokenLine line = p_result.lines[i];
+        const struct token_line_s line = p_result.lines[i];
         printf("Line %u (type %u):\n", line.row, line.type);
         for(token_uint_t j = 0; j < line.count; j++) {
-            const struct Token token = line.tokens[j];
+            const struct token_s token = line.tokens[j];
             const char* string = token.string;
             printf("\t|");
             for(token_uint_t k = 0; k < token.length; k++) 
@@ -18,7 +18,7 @@ static void print_token_result(const struct TokenResult p_result) {
     }
 }
 
-static int token_handler(bool p_success, const struct TokenResult p_result) {
+static int token_handler(bool p_success, const struct token_result_s p_result) {
     if(!p_success) {
         printf("Error: %s. [row %u, column %u]\n", p_result.error.message, p_result.error.row, p_result.error.column);
         return 1;
