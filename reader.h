@@ -5,13 +5,7 @@
 
 typedef uint32_t reader_uint_t;
 
-struct ReadContent {
-    char* string;
-    reader_uint_t length;
-    reader_uint_t capacity;
-};
-
-typedef int (*read_handler_t)(const struct ReadContent p_content);
+typedef int (*read_handler_t)(const char* p_content);
 
 int read(const char* p_filepath, read_handler_t p_handler);
 #endif //_READER_H_
