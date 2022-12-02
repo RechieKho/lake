@@ -8,7 +8,7 @@
 
 int read(const char* p_filepath, read_handler_t p_handler) {
     int code = -1;
-    size_t file_size = 0;
+    long file_size = 0;
     char* content = NULL;
     FILE* file = fopen(p_filepath, "r");
     ASSERT_TRUE(file, quit);
@@ -16,7 +16,7 @@ int read(const char* p_filepath, read_handler_t p_handler) {
     ASSERT_POS(file_size = ftell(file), cleanup_file);
     ASSERT_FALSE(fseek(file, 0L, SEEK_SET), cleanup_file);
     ASSERT_TRUE(content = (char*) calloc(file_size + 1,sizeof(char)), cleanup_content);
-    ASSERT_EQU(fread(content, sizeof(char), file_size, file), file_size, cleanup_content);
+    ASSERT_EQU(fread(content, sizeof(char), file_size, file), (size_t) file_size, cleanup_content);
     code = p_handler(content);
     return code;
 cleanup_content:
