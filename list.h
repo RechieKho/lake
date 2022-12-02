@@ -1,5 +1,5 @@
-#ifndef _LIST_H_
-#define _LIST_H_
+#ifndef _list_s_H_
+#define _list_s_H_
 
 /* # list
  * This file contains macro for declaring and defining list structure that
@@ -63,7 +63,7 @@ typedef uint32_t list_uint;
  * <<
  * */
 #define LIST_DECLARE_STRUCT(mp_id) \
-    struct mp_id ## _list; 
+    struct mp_id ## _list_s; 
 
 /* Get item by index.
  *
@@ -75,7 +75,7 @@ typedef uint32_t list_uint;
  *  `r_item` - Retreived item.
  * */
 #define LIST_DECLARE_FUNC_GET(mp_id, mp_type) \
-    bool mp_id ## _list_get(const struct mp_id ## _list* p_list, list_uint p_index, mp_type* r_item);
+    bool mp_id ## _list_s_get(const struct mp_id ## _list_s* p_list, list_uint p_index, mp_type* r_item);
 
 /* Get the length of list.
  *
@@ -88,7 +88,7 @@ typedef uint32_t list_uint;
  * @noerror
  * */
 #define LIST_DECLARE_FUNC_LENGTH(mp_id, mp_type, mp_keyword) \
-    mp_keyword list_uint mp_id ## _list_length(const struct mp_id ##_list* p_list);
+    mp_keyword list_uint mp_id ## _list_s_length(const struct mp_id ##_list* p_list);
 
 /* Find the index of nth item given. 
  *
@@ -105,7 +105,7 @@ typedef uint32_t list_uint;
  *  % - `true` on success. `false` on fail.
  * */
 #define LIST_DECLARE_FUNC_FIND(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_find(const struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index);
+    mp_keyword bool mp_id ## _list_s_find(const struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index);
 
 /* Check whether the lists given are equal.
  *
@@ -119,7 +119,7 @@ typedef uint32_t list_uint;
  * @noerror
  * */
 #define LIST_DECLARE_FUNC_EQUAL(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_equal(const struct mp_id ## _list* p_list_a, const struct mp_id ## _list* p_list_b);
+    mp_keyword bool mp_id ## _list_s_equal(const struct mp_id ## _list_s* p_list_a, const struct mp_id ## _list_s* p_list_b);
 
 /* Allocate memory for the list structure.
  * 
@@ -133,7 +133,7 @@ typedef uint32_t list_uint;
  *  % - Valid pointer on success. `NULL` on fail. 
  * */
 #define LIST_DECLARE_FUNC_NEW(mp_id, mp_type, mp_keyword) \
-    mp_keyword struct mp_id ## _list* mp_id ## _list_new();
+    mp_keyword struct mp_id ## _list_s* mp_id ## _list_s_new();
 
 /* Free the list structure together with the array. 
  *  It only free the array when `capacity` is not 0. 
@@ -146,7 +146,7 @@ typedef uint32_t list_uint;
  * @noerror
  * */
 #define LIST_DECLARE_FUNC_FREE(mp_id, mp_type, mp_keyword) \
-    mp_keyword void mp_id ## _list_free(struct mp_id ## _list* p_list);
+    mp_keyword void mp_id ## _list_s_free(struct mp_id ## _list_s* p_list);
 
 /* Free the array allocated when `capacity` is not 0. 
  *
@@ -158,7 +158,7 @@ typedef uint32_t list_uint;
  * @noerror
  * */
 #define LIST_DECLARE_FUNC_FREE_ITEMS(mp_id, mp_type, mp_keyword) \
-    mp_keyword void mp_id ## _list_free_items(struct mp_id ## _list* p_list);
+    mp_keyword void mp_id ## _list_s_free_items(struct mp_id ## _list_s* p_list);
 
 /* Copy an array to the list. 
  *
@@ -174,7 +174,7 @@ typedef uint32_t list_uint;
  *  % - `true` on success. `false` on fail. 
  * */
 #define LIST_DECLARE_FUNC_FROM_ARRAY(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_from_array(const mp_type* p_array, list_uint p_length, struct mp_id ## _list* r_list);
+    mp_keyword bool mp_id ## _list_s_from_array(const mp_type* p_array, list_uint p_length, struct mp_id ## _list_s* r_list);
 
 /* Set item in the list by index. 
  *
@@ -190,7 +190,7 @@ typedef uint32_t list_uint;
  *  % - `true` on success. `false` on fail. 
  * */
 #define LIST_DECLARE_FUNC_SET(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_set(struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_index);
+    mp_keyword bool mp_id ## _list_s_set(struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_index);
 
 /* Insert item into the list and push back items behind.
  *
@@ -207,7 +207,7 @@ typedef uint32_t list_uint;
  *  % - `true` on success. `false` on fail. 
  * */
 #define LIST_DECLARE_FUNC_INSERT(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_insert(struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_index);
+    mp_keyword bool mp_id ## _list_s_insert(struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_index);
 
 /* Remove item from the list and push front the items behind.
  *
@@ -222,7 +222,7 @@ typedef uint32_t list_uint;
  *  % - `true` on success. `false` on fail. 
  * */
 #define LIST_DECLARE_FUNC_ERASE(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_erase(struct mp_id ## _list* p_list, list_uint p_index);
+    mp_keyword bool mp_id ## _list_s_erase(struct mp_id ## _list_s* p_list, list_uint p_index);
 
 /* Append item at the back of the list.
  *
@@ -237,7 +237,7 @@ typedef uint32_t list_uint;
  *  % - `true` on succes. `false` on fail.
  * */
 #define LIST_DECLARE_FUNC_APPEND(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_append(struct mp_id ## _list* p_list, const mp_type p_item);
+    mp_keyword bool mp_id ## _list_s_append(struct mp_id ## _list_s* p_list, const mp_type p_item);
 
 /* Prepend item at the front of the list.
  *
@@ -252,7 +252,7 @@ typedef uint32_t list_uint;
  *  % - `true` on succes. `false` on fail.
  * */
 #define LIST_DECLARE_FUNC_PREPEND(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_prepend(struct mp_id ## _list* p_list, const mp_type p_item);
+    mp_keyword bool mp_id ## _list_s_prepend(struct mp_id ## _list_s* p_list, const mp_type p_item);
 
 /* Remove item at the back of the list.
  *
@@ -267,7 +267,7 @@ typedef uint32_t list_uint;
  *  % - `true` on succes. `false` on fail.
  * */
 #define LIST_DECLARE_FUNC_POP_FRONT(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_pop_front(struct mp_id ## _list* p_list, mp_type* r_popped);
+    mp_keyword bool mp_id ## _list_s_pop_front(struct mp_id ## _list_s* p_list, mp_type* r_popped);
 
 /* Remove item at the front of the list.
  *
@@ -282,29 +282,29 @@ typedef uint32_t list_uint;
  *  % - `true` on succes. `false` on fail.
  * */
 #define LIST_DECLARE_FUNC_POP_BACK(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_pop_back(struct mp_id ## _list* p_list, mp_type* r_popped);
+    mp_keyword bool mp_id ## _list_s_pop_back(struct mp_id ## _list_s* p_list, mp_type* r_popped);
 
 #define LIST_DEFINE_STRUCT(mp_id, mp_type, mp_keyword) \
-    mp_keyword struct mp_id ## _list { \
+    mp_keyword struct mp_id ## _list_s { \
         list_uint capacity; \
         list_uint length; \
         mp_type* items; \
     }
 
 #define LIST_DEFINE_FUNC_GET(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_get(const struct mp_id ## _list* p_list, list_uint p_index, mp_type* r_item) { \
+    mp_keyword bool mp_id ## _list_s_get(const struct mp_id ## _list_s* p_list, list_uint p_index, mp_type* r_item) { \
         if(p_index >= p_list->length) return false;  \
         if(r_item) *r_item = p_list->items[p_index];  \
         return true; \
     }
 
 #define LIST_DEFINE_FUNC_LENGTH(mp_id, mp_type, mp_keyword) \
-    mp_keyword list_uint mp_id ## _list_length(const struct mp_id ##_list* p_list) { \
+    mp_keyword list_uint mp_id ## _list_s_length(const struct mp_id ##_list* p_list) { \
         return p_list->length; \
     }
 
 #define LIST_DEFINE_FUNC_FIND(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_find(const struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index) { \
+    mp_keyword bool mp_id ## _list_s_find(const struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index) { \
         for(list_uint i = 0; i < p_list->length; i++) \
             if(p_list->items[i] == p_item && !p_nth--) { \
                 *r_index = i;  \
@@ -314,7 +314,7 @@ typedef uint32_t list_uint;
     }
 
 #define LIST_DEFINE_FUNC_EQUAL(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_equal(const struct mp_id ## _list* p_list_a, const struct mp_id ## _list* p_list_b) { \
+    mp_keyword bool mp_id ## _list_s_equal(const struct mp_id ## _list_s* p_list_a, const struct mp_id ## _list_s* p_list_b) { \
         if(p_list_a->length != p_list_b->length) return false; \
         for(list_uint i = 0; i < p_list_a->length; i++) \
             if(p_list_a->items[i] != p_list_b->items[i]) return false;  \
@@ -322,30 +322,30 @@ typedef uint32_t list_uint;
     }
 
 #define LIST_DEFINE_FUNC_NEW(mp_id, mp_type, mp_keyword) \
-    mp_keyword struct mp_id ## _list* mp_id ## _list_new() { \
-        return calloc(1, sizeof(struct mp_id ## _list)); \
+    mp_keyword struct mp_id ## _list_s* mp_id ## _list_s_new() { \
+        return calloc(1, sizeof(struct mp_id ## _list_s)); \
     }
 
 #define LIST_DEFINE_FUNC_FREE(mp_id, mp_type, mp_keyword) \
-    mp_keyword void mp_id ## _list_free(struct mp_id ## _list* p_list) { \
+    mp_keyword void mp_id ## _list_s_free(struct mp_id ## _list_s* p_list) { \
         if(p_list->capacity) free(p_list->items);  \
         free(p_list);  \
     }
 
 #define LIST_DEFINE_FUNC_FREE_ITEMS(mp_id, mp_type, mp_keyword) \
-    mp_keyword void mp_id ## _list_free_items(struct mp_id ## _list* p_list) { \
+    mp_keyword void mp_id ## _list_s_free_items(struct mp_id ## _list_s* p_list) { \
         if(p_list->capacity) free(p_list->items); \
     }
 
 #define LIST_DEFINE_FUNC_SET(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_set(struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_index) { \
+    mp_keyword bool mp_id ## _list_s_set(struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_index) { \
         if(p_index >= p_list->length) return false;  \
         p_list->items[p_index] = p_item;  \
         return true; \
     }
 
 #define LIST_DEFINE_FUNC_INSERT(mp_id, mp_type, mp_keyword) \
-    static bool mp_id ## _list_make_space(struct mp_id ## _list* p_list, list_uint p_new_length) { \
+    static bool mp_id ## _list_s_make_space(struct mp_id ## _list_s* p_list, list_uint p_new_length) { \
         list_uint new_capacity = p_list->capacity? p_list->capacity: LIST_INIT_ITEM_COUNT; \
         while(new_capacity < p_new_length) new_capacity *= 2;  \
         mp_type* new_items = NULL; \
@@ -354,45 +354,45 @@ typedef uint32_t list_uint;
         p_list->capacity = new_capacity;  \
         return true; \
     } \
-    mp_keyword bool mp_id ## _list_insert(struct mp_id ## _list* p_list, const mp_type p_item, list_uint p_index) { \
+    mp_keyword bool mp_id ## _list_s_insert(struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_index) { \
         if(p_index > p_list->length) return false;  \
-        if(!mp_id ## _list_make_space(p_list, p_list->length + 1)) return false; \
+        if(!mp_id ## _list_s_make_space(p_list, p_list->length + 1)) return false; \
         for(list_uint i = p_list->length; i > p_index; i--) \
             memcpy(p_list->items + i, p_list->items + i - 1, sizeof(mp_type));   \
         p_list->items[p_index] = p_item; \
         p_list->length++; \
         return true;  \
     } \
-    mp_keyword bool mp_id ## _list_append(struct mp_id ## _list* p_list, const mp_type p_item) { \
-        return mp_id ## _list_insert(p_list, p_item, p_list->length); \
+    mp_keyword bool mp_id ## _list_s_append(struct mp_id ## _list_s* p_list, const mp_type p_item) { \
+        return mp_id ## _list_s_insert(p_list, p_item, p_list->length); \
     } \
-    mp_keyword bool mp_id ## _list_prepend(struct mp_id ## _list* p_list, const mp_type p_item) { \
-        return mp_id ## _list_insert(p_list, p_item, 0); \
+    mp_keyword bool mp_id ## _list_s_prepend(struct mp_id ## _list_s* p_list, const mp_type p_item) { \
+        return mp_id ## _list_s_insert(p_list, p_item, 0); \
     } \
-    mp_keyword bool mp_id ## _list_from_array(const mp_type* p_array, list_uint p_length, struct mp_id ## _list* r_list) { \
-        if(!mp_id ## _list_make_space(r_list, p_length)) return false; \
+    mp_keyword bool mp_id ## _list_s_from_array(const mp_type* p_array, list_uint p_length, struct mp_id ## _list_s* r_list) { \
+        if(!mp_id ## _list_s_make_space(r_list, p_length)) return false; \
         memcpy(r_list->items, p_array, p_length * sizeof(mp_type));  \
         r_list->length = p_length;  \
         return true;  \
     } \
 
 #define LIST_DEFINE_FUNC_ERASE(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_erase(struct mp_id ## _list* p_list, list_uint p_index) { \
+    mp_keyword bool mp_id ## _list_s_erase(struct mp_id ## _list_s* p_list, list_uint p_index) { \
         if(p_index >= p_list->length) return false;  \
         for(list_uint i = p_index; i < p_list->length - 1; i++) \
             memcpy(p_list->items + i, p_list->items + i + 1, sizeof(mp_type));   \
         p_list->length--;  \
         return true;  \
     } \
-    mp_keyword bool mp_id ## _list_pop_back(struct mp_id ## _list* p_list, mp_type* r_popped) { \
+    mp_keyword bool mp_id ## _list_s_pop_back(struct mp_id ## _list_s* p_list, mp_type* r_popped) { \
         const mp_type popped = p_list->items[p_list->length];  \
-        if(!mp_id ## _list_erase(p_list, p_list->length - 1)) return false; \
+        if(!mp_id ## _list_s_erase(p_list, p_list->length - 1)) return false; \
         *r_popped = popped;  \
         return true; \
     } \
-    mp_keyword bool mp_id ## _list_pop_front(struct mp_id ## _list* p_list, mp_type* r_popped) { \
+    mp_keyword bool mp_id ## _list_s_pop_front(struct mp_id ## _list_s* p_list, mp_type* r_popped) { \
         const mp_type popped = p_list->items[0]; \
-        if(!mp_id ## _list_erase(p_list, 0)) return false; \
+        if(!mp_id ## _list_s_erase(p_list, 0)) return false; \
         *r_popped = popped;  \
         return true; \
     }
