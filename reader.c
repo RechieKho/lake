@@ -2,13 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "reader.h"
+#include "macros.h"
 
 #define INIT_CONTENT_CAPACITY 100
-#define ASSERT_TRUE(mp_expression, mp_label) if(!(mp_expression)) goto mp_label
-#define ASSERT_FALSE(mp_expression, mp_label) if((mp_expression)) goto mp_label
-#define ASSERT_POS(mp_expression, mp_label) if((mp_expression) < 0) goto mp_label
-#define ASSERT_EQU(mp_expression, mp_value, mp_label) if((mp_expression) != mp_value) goto mp_label
-#define COUNT_UP(mp_type, mp_variable, mp_count) for(mp_type mp_variable = 0; mp_variable < mp_count; mp_variable++)
 
 int read(const char* p_filepath, read_handler_t p_handler) {
     int code = -1;
