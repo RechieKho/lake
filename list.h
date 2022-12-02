@@ -62,8 +62,8 @@ typedef uint32_t list_uint;
  *  `items` - Array of items. 
  * <<
  * */
-#define LIST_DECLARE_STRUCT(mp_id, mp_keyword) \
-    mp_keyword struct mp_id ## _list; 
+#define LIST_DECLARE_STRUCT(mp_id) \
+    struct mp_id ## _list; 
 
 /* Get item by index.
  *
@@ -74,8 +74,8 @@ typedef uint32_t list_uint;
  * @return
  *  `r_item` - Retreived item.
  * */
-#define LIST_DECLARE_FUNC_GET(mp_id, mp_type, mp_keyword) \
-    mp_keyword bool mp_id ## _list_get(const struct mp_id ## _list* p_list, list_uint p_index, mp_type* r_item);
+#define LIST_DECLARE_FUNC_GET(mp_id, mp_type) \
+    bool mp_id ## _list_get(const struct mp_id ## _list* p_list, list_uint p_index, mp_type* r_item);
 
 /* Get the length of list.
  *
