@@ -6,7 +6,7 @@
 
 typedef uint32_t token_uint_t;
 
-enum TokenType {
+enum token_type_e {
     STR_LIT_E,
     INT_LIT_E,
     FLOAT_LIT_E,
@@ -19,27 +19,27 @@ enum TokenType {
     COLON_OP_E,
 };
 
-enum TokenLineType {
+enum token_line_type_e {
     INSTRUCT,
     INCLUDE
 };
 
-struct Token {
+struct token_s {
     const char* string;
     token_uint_t length;
     token_uint_t column;
-    enum TokenType type;
+    enum token_type_e type;
 };
 
-struct TokenLine {
-    struct Token* tokens;
+struct token_line_s {
+    struct token_s* tokens;
     token_uint_t count;
     token_uint_t capacity;
     token_uint_t row;
-    enum TokenLineType type;
+    enum token_line_type_e type;
 };
 
-struct TokenError {
+struct token_error_s {
     const char* message;
     struct {
         const char* string;
@@ -49,12 +49,14 @@ struct TokenError {
     token_uint_t column;
 };
 
-struct TokenResult {
-    struct TokenError error;
-    struct TokenLine* lines;
+struct token_result_s {
+    struct token_error_s error;
+    struct token_line_s* lines;
     token_uint_t count;
     token_uint_t capacity;
 };
 
-int tokenize(const char* p_string, int (*p_handler)(bool p_success, const struct TokenResult p_result));
+typedef int (*tokenize_handler_t)(bool p_success, const struct token_result_s p_result);
+
+int tokenize(const char* p_string, tokenize_handler_t p_handler);
 #endif //_TOKEN_H_

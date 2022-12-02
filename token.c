@@ -22,7 +22,7 @@
     if(!append_token(&mp_line, mp_token)) RAISE_ERROR(mp_error, error_strings.memory_error, mp_label); \
 } while(false);
 #define PARSE_LINE(mp_string, mp_length, mp_row, mp_result, mp_label) do { \
-        struct TokenLine line = {0}; \
+        struct token_line_s line = {0}; \
         if(!parse_line(mp_string, mp_length, &line, &mp_result.error)) goto mp_label; \
         if(line.capacity) { \
             if(define_line(&line)) { \
@@ -35,7 +35,7 @@
         } \
     } while(false);
 
-static const struct TokenError ok = {0};
+static const struct token_error_s ok = {0};
 static const struct {
     const char* unterminated_strlit;
     const char* memory_error;
@@ -48,33 +48,33 @@ static const char* standalone_chars = "(){}[]@|";
 static const char* operator_chars = "!:/#";
 static const char* strlit_chars = "\"'";
 
-static bool append_token(struct TokenLine* p_line, const struct Token p_token) {
+static bool append_token(struct token_line_s* p_line, const struct token_s p_token) {
     const token_uint_t new_count = p_line->count + 1;
     token_uint_t new_capacity = p_line->capacity ? p_line->capacity : INIT_TOKEN_CAPACITY;
     while(new_capacity < new_count) new_capacity *= 2;
     if(new_capacity != p_line->capacity)
-        if(!(p_line->tokens = realloc((void *)p_line->tokens, sizeof(struct Token) * new_capacity))) return false;
+        if(!(p_line->tokens = realloc((void *)p_line->tokens, sizeof(struct token_s) * new_capacity))) return false;
     p_line->capacity = new_capacity; 
     p_line->count = new_count;
     p_line->tokens[new_count - 1] = p_token;
     return true;
 }
 
-static bool append_line(struct TokenResult* p_result, const struct TokenLine p_line) {
+static bool append_line(struct token_result_s* p_result, const struct token_line_s p_line) {
     const token_uint_t new_count = p_result->count + 1;
     token_uint_t new_capacity = p_result->capacity ? p_result->capacity : INIT_LINE_CAPACITY;
     while(new_capacity < new_count) new_capacity *= 2;
     if(new_capacity != p_result->capacity)
-        if(!(p_result->lines = realloc((void *)p_result->lines, sizeof(struct TokenLine) * new_capacity))) return false;
+        if(!(p_result->lines = realloc((void *)p_result->lines, sizeof(struct token_line_s) * new_capacity))) return false;
     p_result->capacity = new_capacity; 
     p_result->count = new_count;
     p_result->lines[new_count - 1] = p_line;
     return true;
 }
 
-static token_uint_t is_token_number(const struct Token* p_token) {
+static token_uint_t is_token_number(const struct token_s* p_token) {
     if(!p_token->length) return 0;
-    enum TokenType type = INT_LIT_E;
+    enum token_type_e type = INT_LIT_E;
     for(token_uint_t i = 0; i < p_token->length; i++) {
         const char c = p_token->string[i];
         if(!isdigit(c)) {
@@ -85,7 +85,7 @@ static token_uint_t is_token_number(const struct Token* p_token) {
     return type;
 }
 
-static void define_token(struct Token* p_token) {
+static void define_token(struct token_s* p_token) {
     if (IS_TOKEN_STR(p_token, "|")) p_token->type = BAR_OP_E;
     else if (IS_TOKEN_STR(p_token, "!")) p_token->type = BANG_OP_E;
     else if (IS_TOKEN_STR(p_token, "@")) p_token->type = AT_OP_E;
@@ -105,10 +105,10 @@ static inline bool is_number(char p_c) {
     return isdigit(p_c) || p_c == '.';
 }
 
-static bool parse_line(const char* p_string, token_uint_t p_length, struct TokenLine* r_line, struct TokenError* r_error) {
-    struct TokenError error = ok;
-    struct TokenLine line = {0};
-    struct Token token = {
+static bool parse_line(const char* p_string, token_uint_t p_length, struct token_line_s* r_line, struct token_error_s* r_error) {
+    struct token_error_s error = ok;
+    struct token_line_s line = {0};
+    struct token_s token = {
         p_string,
         0, 0, 0
     };
@@ -207,13 +207,13 @@ static bool parse_line(const char* p_string, token_uint_t p_length, struct Token
     return false;
 }
 
-static void free_result(const struct TokenResult p_result) {
+static void free_result(const struct token_result_s p_result) {
     for(token_uint_t i = 0; i < p_result.count; i++)
         if(p_result.lines[i].capacity) free(p_result.lines[i].tokens);
     if(p_result.capacity) free((void *)p_result.lines);
 }
 
-static bool define_line(struct TokenLine* p_line) {
+static bool define_line(struct token_line_s* p_line) {
     if(!p_line->capacity) return false;
     if(p_line->tokens[0].type == INSTRUCT_OP_E) {
         p_line->type = INSTRUCT;
@@ -231,8 +231,8 @@ static bool define_line(struct TokenLine* p_line) {
     return false;
 }
 
-static bool parse_text(const char* p_string, struct TokenResult* r_result) {
-    struct TokenResult result = {0};
+static bool parse_text(const char* p_string, struct token_result_s* r_result) {
+    struct token_result_s result = {0};
     const char* current = p_string;
     struct {
         const char* string;
@@ -262,8 +262,8 @@ static bool parse_text(const char* p_string, struct TokenResult* r_result) {
     return false;
 }
 
-int tokenize(const char* p_string, int (*p_handler)(bool p_success,const struct TokenResult p_result)) {
-    struct TokenResult r;
+int tokenize(const char* p_string, tokenize_handler_t p_handler) {
+    struct token_result_s r;
     bool success = parse_text(p_string, &r);
     int status = p_handler(success, r);
     free_result(r);
