@@ -11,7 +11,7 @@ enum TokenType {
     INT_LIT_E,
     FLOAT_LIT_E,
     SLASH_OP_E,
-    COMMA_OP_E,
+    BAR_OP_E,
     BANG_OP_E,
     AT_OP_E,
     SHARP_OP_E,

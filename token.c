@@ -44,7 +44,7 @@ static const struct {
     "Fail to allocated memory.",
 };
 
-static const char* standalone_chars = "(){}[]@,";
+static const char* standalone_chars = "(){}[]@|";
 static const char* operator_chars = "!:/#";
 static const char* strlit_chars = "\"'";
 
@@ -86,7 +86,7 @@ static token_uint_t is_token_number(const struct Token* p_token) {
 }
 
 static void define_token(struct Token* p_token) {
-    if (IS_TOKEN_STR(p_token, ",")) p_token->type = COMMA_OP_E;
+    if (IS_TOKEN_STR(p_token, "|")) p_token->type = BAR_OP_E;
     else if (IS_TOKEN_STR(p_token, "!")) p_token->type = BANG_OP_E;
     else if (IS_TOKEN_STR(p_token, "@")) p_token->type = AT_OP_E;
     else if (IS_TOKEN_STR(p_token, "/")) p_token->type = SLASH_OP_E;
