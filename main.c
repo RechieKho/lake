@@ -28,7 +28,7 @@ static int token_handler(bool p_success, const struct TokenResult p_result) {
 }
 
 static int read_handler(const char* p_content){
-    printf("%s\n", p_content);
+    tokenize(p_content, token_handler);
     return 0;
 };
 
