@@ -3,11 +3,11 @@
 #include <ctype.h>
 
 #include "token.h"
+#include "macros.h"
 
 #define INIT_TOKEN_CAPACITY 20
 #define INIT_LINE_CAPACITY 20
 
-#define ARRAY_LEN(mp_array) (sizeof(mp_array) ? (sizeof(mp_array) / sizeof(mp_array[0])) : 0)
 #define IS_TOKEN_STRLIT(mp_token) (mp_token->length >= 2 && *mp_token->string == '\'')
 #define IS_TOKEN_STR(mp_token, mp_str) ( \
         (strlen(mp_str) == mp_token->length) && \
