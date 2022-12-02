@@ -16,7 +16,6 @@ int reader_read(const char* p_filepath, reader_handler_t p_handler) {
     ASSERT_TRUE(content = (char*) calloc(file_size + 1,sizeof(char)), cleanup_content);
     ASSERT_EQU(fread(content, sizeof(char), file_size, file), (size_t) file_size, cleanup_content);
     code = p_handler(content);
-    return code;
 cleanup_content:
     free(content);
 cleanup_file:
