@@ -37,11 +37,9 @@
 
 static const struct TokenError ok = {0};
 static const struct {
-    const char* mixed_indentation;
     const char* unterminated_strlit;
     const char* memory_error;
 } error_strings = {
-    "Mixed indentation is forbidden.",
     "Unterminated string literal.",
     "Fail to allocated memory.",
 };
@@ -49,7 +47,6 @@ static const struct {
 static const char* standalone_chars = "(){}[]@,";
 static const char* operator_chars = "!:/#";
 static const char* strlit_chars = "\"'";
-static const char* indent_chars = " \t";
 
 static bool append_token(struct TokenLine* p_line, const struct Token p_token) {
     const token_uint_t new_count = p_line->count + 1;
@@ -111,8 +108,10 @@ static inline bool is_number(char p_c) {
 static bool parse_line(const char* p_string, token_uint_t p_length, struct TokenLine* r_line, struct TokenError* r_error) {
     struct TokenError error = ok;
     struct TokenLine line = {0};
-    struct Token token = {0};
-    static char indent_char = 0;
+    struct Token token = {
+        p_string,
+        0, 0, 0
+    };
     char strlit_char = 0;
     struct CharGroup {
         bool is_reading;
@@ -121,91 +120,76 @@ static bool parse_line(const char* p_string, token_uint_t p_length, struct Token
         { false, is_operator},
         { false, is_number}
     };
-    bool on_line_start = true;
     for(token_uint_t column = 0; column < p_length; column++) {
         const char c = p_string[column];
-        if(on_line_start) {
-            if(strchr(indent_chars, c)) {
-                if(!indent_char) indent_char = c;
-                if(indent_char != c) RAISE_ERROR(error, error_strings.mixed_indentation, on_error);
-                line.indent++;
-            } else {
-                on_line_start = false;
-                token.column = column;
-                token.string = p_string + column;
-                token.length = 0;
-                goto parse;
-            }
-        } else {
-            parse:
-            if(c == '\\') {
-                token.length += 2;
-                column++;
-                goto next;
-            }
-            if(strlit_char) {
-                token.length++;
-                if(c == strlit_char) {
-                    strlit_char = 0;
-                    APPEND_TOKEN(line, token, error, on_error);
-                    token.column = column + 1;
-                    token.string = p_string + column + 1;
-                    token.length = 0;
-                }
-                goto next;
-            } 
-            for (token_uint_t i = 0; i < ARRAY_LEN(groups); i ++) {
-                if (groups[i].is_reading) {
-                    if(!groups[i].is_in_group(c)) {
-                        APPEND_TOKEN(line, token, error, on_error);
-                        token.column = column;
-                        token.string = p_string + column;
-                        token.length = 0;
-                        groups[i].is_reading = false;
-                        goto parse;
-                    } else token.length++;
-                    goto next;
-                } else if(groups[i].is_in_group(c)) {
-                    if(token.length)
-                        APPEND_TOKEN(line, token, error, on_error);
-                    token.column = column;
-                    token.string = p_string + column;
-                    token.length = 1;
-                    groups[i].is_reading = true;
-                    goto next;
-                }
-            }
-            if(strchr(strlit_chars, c)) {
-                if(token.length)
-                    APPEND_TOKEN(line, token, error, on_error);
-                token.column = column + 1;
-                token.string = p_string + column;
-                token.length = 1;
-                strlit_char = c;
-                goto next;
-            } 
-            if (strchr(standalone_chars, c)) {
-                if(token.length)
-                    APPEND_TOKEN(line, token, error, on_error);
-                token.column = column;
-                token.string = p_string + column;
-                token.length = 1;
+        parse:
+        if(c == '\\') {
+            token.length += 2;
+            column++;
+            goto next;
+        }
+        if(strlit_char) {
+            token.length++;
+            if(c == strlit_char) {
+                strlit_char = 0;
                 APPEND_TOKEN(line, token, error, on_error);
                 token.column = column + 1;
                 token.string = p_string + column + 1;
                 token.length = 0;
+            }
+            goto next;
+        } 
+        for (token_uint_t i = 0; i < ARRAY_LEN(groups); i ++) {
+            if (groups[i].is_reading) {
+                if(!groups[i].is_in_group(c)) {
+                    APPEND_TOKEN(line, token, error, on_error);
+                    token.column = column;
+                    token.string = p_string + column;
+                    token.length = 0;
+                    groups[i].is_reading = false;
+                    goto parse;
+                } else token.length++;
                 goto next;
-            } 
-            if (isspace(c)) {
+            } else if(groups[i].is_in_group(c)) {
                 if(token.length)
                     APPEND_TOKEN(line, token, error, on_error);
-                token.column = column + 1;
-                token.string = p_string + column + 1;
-                token.length = 0;
+                token.column = column;
+                token.string = p_string + column;
+                token.length = 1;
+                groups[i].is_reading = true;
                 goto next;
-            } 
-            token.length++;
+            }
         }
+        if(strchr(strlit_chars, c)) {
+            if(token.length)
+                APPEND_TOKEN(line, token, error, on_error);
+            token.column = column + 1;
+            token.string = p_string + column;
+            token.length = 1;
+            strlit_char = c;
+            goto next;
+        } 
+        if (strchr(standalone_chars, c)) {
+            if(token.length)
+                APPEND_TOKEN(line, token, error, on_error);
+            token.column = column;
+            token.string = p_string + column;
+            token.length = 1;
+            APPEND_TOKEN(line, token, error, on_error);
+            token.column = column + 1;
+            token.string = p_string + column + 1;
+            token.length = 0;
+            goto next;
+        } 
+        if (isspace(c)) {
+            if(token.length)
+                APPEND_TOKEN(line, token, error, on_error);
+            token.column = column + 1;
+            token.string = p_string + column + 1;
+            token.length = 0;
+            goto next;
+        } 
+        token.length++;
         next:;
     }
     if(strlit_char) RAISE_ERROR(error, error_strings.unterminated_strlit, on_error);

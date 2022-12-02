@@ -35,7 +35,6 @@ struct TokenLine {
     struct Token* tokens;
     token_uint_t count;
     token_uint_t capacity;
-    token_uint_t indent;
     token_uint_t row;
     enum TokenLineType type;
 };

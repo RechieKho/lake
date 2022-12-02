@@ -6,7 +6,7 @@
 static void print_token_result(const struct TokenResult p_result) {
     for(token_uint_t i = 0; i < p_result.count; i++) {
         const struct TokenLine line = p_result.lines[i];
-        printf("Line %u (indent %u, type %u):\n", line.row, line.indent, line.type);
+        printf("Line %u (type %u):\n", line.row, line.type);
         for(token_uint_t j = 0; j < line.count; j++) {
             const struct Token token = line.tokens[j];
             const char* string = token.string;
