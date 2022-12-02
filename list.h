@@ -74,8 +74,8 @@ typedef uint32_t list_uint;
  * @return
  *  `r_item` - Retreived item.
  * */
-#define LIST_DECLARE_FUNC_GET(mp_id, mp_type) \
-    bool mp_id ## _list_s_get(const struct mp_id ## _list_s* p_list, list_uint p_index, mp_type* r_item);
+#define LIST_DECLARE_FUNC_GET(mp_id, mp_type, mp_keyword) \
+    mp_keyword bool mp_id ## _list_s_get(const struct mp_id ## _list_s* p_list, list_uint p_index, mp_type* r_item);
 
 /* Get the length of list.
  *
@@ -284,8 +284,8 @@ typedef uint32_t list_uint;
 #define LIST_DECLARE_FUNC_POP_BACK(mp_id, mp_type, mp_keyword) \
     mp_keyword bool mp_id ## _list_s_pop_back(struct mp_id ## _list_s* p_list, mp_type* r_popped);
 
-#define LIST_DEFINE_STRUCT(mp_id, mp_type, mp_keyword) \
-    mp_keyword struct mp_id ## _list_s { \
+#define LIST_DEFINE_STRUCT(mp_id, mp_type) \
+    struct mp_id ## _list_s { \
         list_uint capacity; \
         list_uint length; \
         mp_type* items; \
