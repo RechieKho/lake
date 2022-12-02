@@ -1,4 +1,4 @@
-CC:=clang
+CC:=gcc
 CFLAG:=-Wall
 OBJ_DIR:=@obj
 BIN_DIR:=@bin
