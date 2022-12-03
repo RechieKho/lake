@@ -107,6 +107,23 @@ typedef uint32_t list_uint;
 #define LIST_DECLARE_FUNC_FIND(mp_id, mp_type, mp_keyword) \
     mp_keyword bool mp_id ## _list_s_find(const struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index);
 
+/* Find the item using function given.
+ *
+ * @param
+ *  `p_list` - The list to be operated on. 
+ *  `p_finder` - Function that finds the item.
+ *  `p_nth` - Nth item. 
+ *
+ * @return 
+ *  `r_index` - index of the item in the list.
+ *
+ * @error 
+ *  | When the item is not in the list, it fails.
+ *  % - `true` on success. `false` on fail.
+ * */
+#define LIST_DECLARE_FUNC_IDENTIFY(mp_id, mp_type, mp_hint_type, mp_keyword) \
+    mp_keyword bool mp_id ## _list_s_identify(const struct mp_id ## _list_s* p_list, mp_hind_type p_hint, bool (*p_finder)(mp_hind_type, const mp_type), list_uint p_nth, list_uint* r_index);
+
 /* Check whether the lists given are equal.
  *
  * @param 
@@ -307,6 +324,16 @@ typedef uint32_t list_uint;
     mp_keyword bool mp_id ## _list_s_find(const struct mp_id ## _list_s* p_list, const mp_type p_item, list_uint p_nth, list_uint* r_index) { \
         for(list_uint i = 0; i < p_list->length; i++) \
             if(p_list->items[i] == p_item && !p_nth--) { \
+                *r_index = i;  \
+                return true;  \
+            } \
+        return false; \
+    }
+
+#define LIST_DEFINE_FUNC_IDENTIFY(mp_id, mp_type, mp_hint_type, mp_keyword) \
+    mp_keyword bool mp_id ## _list_s_identify(const struct mp_id ## _list_s* p_list, mp_hint_type p_hint, bool (*p_finder)(mp_hint_type, const mp_type), list_uint p_nth, list_uint* r_index) { \
+        for(list_uint i = 0; i < p_list->length; i++) \
+            if(p_finder(p_hint, p_list->items[i]) && !p_nth--) { \
                 *r_index = i;  \
                 return true;  \
             } \
