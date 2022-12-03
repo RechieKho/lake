@@ -1,5 +1,5 @@
 CC:=gcc
-CFLAG:=-Wall
+CFLAG:=-Wall -Wno-unused-function
 OBJ_DIR:=@obj
 BIN_DIR:=@bin
 BIN_NAME:=lake
