@@ -35,7 +35,8 @@ static int read_handler(const char* p_content){
 int main(int argc, const char* argv[]) {
     if(argc < 2) return 0;
     printf("Filepath: %s\n", argv[1]);
-    int status = reader_read(argv[1], read_handler);
+    int status = reader_read(argv[1], read_handler, false);
     if(status < 0) fprintf(stderr, "Error: %d code.\n", errno);
+    reader_clear_cache();
     return status;
 }
